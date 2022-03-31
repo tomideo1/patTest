@@ -96,14 +96,6 @@ export default defineComponent({
       const value = form.amount
       loading.value = true
       try {
-        if (!props.contract) {
-          loading.value = false
-          message.type = 'error'
-          message.message = 'Contract Not Loaded Successful'
-          // @ts-ignore
-          root.$toast.error(message.message, { duration: 3000 })
-          return
-        }
         await props.contract.methods.transfer(to, value).send({
           from: form.from,
           gas: gas.value,
@@ -111,15 +103,14 @@ export default defineComponent({
         })
         message.type = 'success'
         message.message = 'Transaction Successful'
-        loading.value = false
         // @ts-ignore
         root.$toast.success(message.message)
       } catch (e) {
-        loading.value = false
         message.message = 'something went wrong'
         // @ts-ignore
         root.$toast.error(message.message, { duration: 3000 })
       }
+      loading.value = false
     }
     return {
       loading,
